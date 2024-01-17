@@ -144,7 +144,7 @@ SITE_ID = 1
 AUTH_USER_MODEL = 'myflixapp.CustomUser'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/netflixpro/myflix/myflixprj/static/assets/'
+STATIC_ROOT = '/app/netflixpro/myflix/myflixprj/static/assets/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
