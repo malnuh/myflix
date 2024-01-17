@@ -20,7 +20,7 @@ RUN adduser --disabled-password --gecos '' myuser
 USER myuser
 
 # Define environment variable
-ENV DJANGO_SETTINGS_MODULE="netflixpro.myflix.myflixprj.myflixprj.settings"
+ENV DJANGO_SETTINGS_MODULE="myflixprj.settings"
 
 # Apply migrations and collect static files
 RUN python manage.py migrate
