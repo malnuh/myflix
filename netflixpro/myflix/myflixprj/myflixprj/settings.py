@@ -147,7 +147,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/app/netflixpro/myflix/myflixprj/static/assets/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/app/netflixpro/myflix/myflixprj/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = 'login'
