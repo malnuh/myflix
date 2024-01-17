@@ -4,9 +4,9 @@ FROM python:3.11.7-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Install necessary system dependencies for building psycopg2
+# Install necessary system dependencies for building psycopg2 and Pillow
 RUN apt-get update \
-    && apt-get install -y build-essential libpq-dev \
+    && apt-get install -y build-essential libpq-dev libjpeg-dev zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the current directory contents into the container at /app
@@ -20,7 +20,7 @@ RUN adduser --disabled-password --gecos '' myuser
 USER myuser
 
 # Define environment variable
-ENV DJANGO_SETTINGS_MODULE="myflixprj.settings"
+ENV DJANGO_SETTINGS_MODULE="netflixpro.myflix.myflixprj.myflixprj.settings"
 
 # Apply migrations and collect static files
 RUN python manage.py migrate
