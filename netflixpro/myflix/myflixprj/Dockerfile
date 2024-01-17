@@ -1,30 +1,38 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11.7-slim
+FROM python:3.11.4-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Install necessary system dependencies for building psycopg2 and Pillow
-RUN apt-get update \
-    && apt-get install -y build-essential libpq-dev libjpeg-dev zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y libpq-dev
 
 # Copy the current directory contents into the container at /app
 COPY . /app
 
+# Install pip in Ubuntu
+RUN apt update && \
+    apt install -y python3-pip
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Use a non-root user for security
-RUN adduser --disabled-password --gecos '' myuser
-USER myuser
+# Make port 8000 available to the world outside this container
+EXPOSE 8000
+
+# Set the PYTHONPATH to include the directory containing your Django project
+ENV PYTHONPATH="/app/myflix/netflixpro/myflix/myflixprj"
 
 # Define environment variable
 ENV DJANGO_SETTINGS_MODULE="myflixprj.settings"
 
-# Apply migrations and collect static files
-RUN python manage.py migrate
-RUN python manage.py collectstatic --noinput
+# Set the STATIC_ROOT
+ENV STATIC_ROOT="/app/myflix/netflixpro/myflix/myflixprj/static/assets/"
 
-# Use Gunicorn as the production server
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myflixprj.wsgi:application"]
+# Combine migrations, collect static files, and CMD in a single RUN instruction
+RUN python manage.py migrate && \
+    python manage.py collectstatic --noinput
+
+# Run app.py when the container launches
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
