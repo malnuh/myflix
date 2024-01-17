@@ -20,11 +20,11 @@ RUN adduser --disabled-password --gecos '' myuser
 USER myuser
 
 # Define environment variable
-ENV DJANGO_SETTINGS_MODULE="netflixpro.myflix.myflixprj.myflixprj.settings"
+ENV DJANGO_SETTINGS_MODULE="myflixprj.settings"
 
 # Apply migrations and collect static files
 RUN python manage.py migrate
 RUN python manage.py collectstatic --noinput
 
 # Use Gunicorn as the production server
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "netflixpro.myflix.myflixprj.myflixprj.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myflixprj.wsgi:application"]
