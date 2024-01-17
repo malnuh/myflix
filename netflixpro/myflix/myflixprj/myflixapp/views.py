@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.http import HttpResponseNotFound
 from . forms import ProfileForm
 from . models import Profile, Movie
 
@@ -75,15 +76,25 @@ class MovieDetail(View):
         except Movie.DoesNotExist:
             return redirect('myflixapp:profile-list')
 
+from django.http import HttpResponseNotFound
+
+# ...
+
 method_decorator(login_required, name='dispatch')
 class PlayMovie(View):
     def get(self, request, movie_id, *args, **kwargs):
         try:
             movie = Movie.objects.get(uuid=movie_id)
-            movie = movie.video.values()
             
+            # Check if the movie has a video file
+            if not movie.video:
+                return HttpResponseNotFound("Video not found")
+
+            # Retrieve the video URL
+            video_url = movie.video.url
+
             context = {
-                'movie':list(movie)
+                'video_url': video_url,
             }
 
             return render(request, 'playmovie.html', context)
